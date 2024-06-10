@@ -31,7 +31,7 @@ routes.post('/users', async (req, res) => {
         email: req.body.email,
         age: parseInt(req.body.age)
 }
-    const parsedUser = userSchema.parse(parsedAgeToIntData)
+    const parsedUser = userSchema.parse(parsedAgeToIntData) // Garantindo a integridade dos dados
 
     const result = await userService.createUser(id, parsedUser.name, parsedUser.email, parsedUser.age)
 
@@ -73,7 +73,7 @@ routes.put('/users/:id', async (req, res) => {
             age: parseInt(req.body.age)
     }
     
-    await userService.updateUserById(userId, parsedAgeToIntData)
+    await userService.updateUserById(userId, parsedAgeToIntData) // Garantindo a integridade dos dados
 
     res.status(200).json({ message: `O usuário ${parsedAgeToIntData.name} foi atualizado com sucesso.`})
 
