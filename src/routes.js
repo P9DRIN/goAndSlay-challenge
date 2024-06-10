@@ -21,7 +21,7 @@ const handleZodError = (error) => {
     }
 }
 
-routes.post('/users', (req, res) => {
+routes.post('/users', async (req, res) => {
     const { name } = req.body
 
     try{
@@ -33,16 +33,19 @@ routes.post('/users', (req, res) => {
 }
     const parsedUser = userSchema.parse(parsedAgeToIntData)
 
-    userService.createUser(id, parsedUser.name, parsedUser.email, parsedUser.age)
+    const result = await userService.createUser(id, parsedUser.name, parsedUser.email, parsedUser.age)
 
-    res.status(201).json({message: `O usuário ${name} foi criado com sucesso.` })
+    if(result.error){
+        return res.status(400).json({ message: result.error })
+    }
+  
+    return res.status(201).json({message: `O usuário ${name} foi criado com sucesso.` })
 
 }catch(error){
-
     const errorMessage = handleZodError(error)
-    res.status(400).json({ message: errorMessage })
+    return res.status(400).json({ message: errorMessage })
 }
-
+   
 });
 // Listar Usuários
 routes.get('/users', (req, res) => {
@@ -60,7 +63,7 @@ routes.get('/users/:id', (req, res) => {
 });
 
 // Atualizar Usuário
-routes.put('/users/:id', (req, res) => {
+routes.put('/users/:id', async (req, res) => {
     const userId = req.params.id
 
     try{
@@ -69,11 +72,10 @@ routes.put('/users/:id', (req, res) => {
             email: req.body.email,
             age: parseInt(req.body.age)
     }
+    
+    await userService.updateUserById(userId, parsedAgeToIntData)
 
-    console.log(parsedAgeToIntData, 'parsedAgeIntToData')
-    const UpdateUserById = userService.updateUserById(userId, parsedAgeToIntData)
-
-    res.status(200).json({ message: `O usuário ${parsedAgeToIntData.name} foi atualizado com sucesso.`, user: UpdateUserById})
+    res.status(200).json({ message: `O usuário ${parsedAgeToIntData.name} foi atualizado com sucesso.`})
 
     }catch(error){
         const errorMessage = handleZodError(error)

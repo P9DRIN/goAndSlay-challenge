@@ -33,15 +33,18 @@ class UserRepository extends UserRepositoryInterface{
     findUserById(userId){
         return this.users.filter(user => user.id === userId)
     }
+    findUserByEmail(email){
+        return this.users.filter(user => user.email === email)
+    }
     editUserById(updatedUser){
             
-        const index = this.users.findIndex(user => user.id === updatedUser)
+        const index = this.users.findIndex(user => user.id === updatedUser.id)
 
         if(index === -1){
             throw new Error('O Usuário não existe ou não foi encontrado')
         }
-        
-        this.users[index] = editedUser
+        this.users[index] = updatedUser
+
     }
 }
 

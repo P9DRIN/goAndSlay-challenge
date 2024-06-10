@@ -4,9 +4,17 @@ class UserService{
     constructor(userRepository){
         this.userRepository = userRepository
     }
-    createUser(id, name, email, age){
+    async createUser(id, name, email, age){
+
+        const emailExists = this.userRepository.findUserByEmail(email)
+        if(emailExists.length > 0){
+           return { error: 'Já existe este usuário cadastrado.'}
+        }
+        
         const user = new User(id, name, email, age)
-        this.userRepository.addUser(user)
+         this.userRepository.addUser(user)
+        return { user }
+        
     }
     deleteUser(userId){
         this.userRepository.removeUser(userId)
@@ -18,19 +26,18 @@ class UserService{
         return this.userRepository.findUserById(userId)
     }
     updateUserById(userId, newUser){
-        const userExists = this.userRepository.findUserById(userId)
 
+        const userExists = this.userRepository.findUserById(userId)
         if(!userExists){
             throw new Error('Usuário não existe ou não foi encontrado')
         }
-
-        userExists.name = newUser.name
-        userExists.email = newUser.email
-        userExists.age = newUser.age
-
-        console.log(userExists)
-        
-        this.userRepository.editUserById(userExists)
+        const updatedUser = {
+            id: userId,
+            name: newUser.name,
+            email: newUser.email,
+            age: newUser.age
+        }
+        this.userRepository.editUserById(updatedUser)
 
         return userExists
     }
