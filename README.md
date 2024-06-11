@@ -20,7 +20,7 @@ src/
 
     - Este projeto foi criado com node 20.10.0. Cheque qual versão do node (node -v) está instalada na máquina e mude se necessário.
     
-    - Clone este repositório. Vá em um terminal e procure um diretório que possa ser clonado e utilize: ``git clone https://github.com/P9DRIN/goAndSlay-challenge.git``
+    - Clone este repositório. Vá em um terminal e procure um diretório em que o repositorio possa ser clonado e utilize: ``git clone https://github.com/P9DRIN/goAndSlay-challenge.git``
 
     - Abra o repositório clonado. Em seu editor de código de preferência, instale os pacotes do projeto utilizando ``npm install``.
 
